@@ -4,128 +4,123 @@ import { TaskList } from '../../components/TaskList';
 
 describe('App Page', () => {
   it('should be able to add a task', async () => {
-    render(<TaskList />);
+   // renderizar o componente TaskList
+   render(<TaskList />);
 
-    const taskInput = screen.getByPlaceholderText('Adicionar novo todo');
-    const addTaskButton = screen.getByTestId('add-task-button');
+   // pegando o input pelo placeholder
+   const taskInput = screen.getByPlaceholderText('Adicionar novo todo')
 
-    fireEvent.change(taskInput, {
-      target: {
-        value: 'Desafio ReactJS Ignite'
-      }
-    });
-    fireEvent.click(addTaskButton);
+   // pegando o botão de adicionar a task
+   const addTaskButton = screen.getByTestId('add-task-button')
 
-    const addedFirstTaskTitle = screen.getByText('Desafio ReactJS Ignite');
+   // Mudando o valor do task input
+   fireEvent.change(taskInput, {
+     target: {
+       value: 'Desafio ReactJS Ignite'
+     }
+   })
 
-    expect(addedFirstTaskTitle).toHaveTextContent('Desafio ReactJS Ignite');
-    expect(addedFirstTaskTitle.parentElement).not.toHaveClass('completed')
+   // Clicando no botão de submit do form
+   fireEvent.click(addTaskButton)
 
-    fireEvent.change(taskInput, {
-      target: {
-        value: 'Beber água'
-      }
-    });
-    fireEvent.click(addTaskButton);
+   // Pegando a primeira task adicionada
+   const firstTask = screen.getByText('Desafio ReactJS Ignite')
 
-    const addedSecondTaskTitle = screen.getByText('Beber água');
+   // Esperando que no valor dela tenha o valor 'Desafio ReactJS Ignite'.
+   expect(firstTask).toHaveTextContent('Desafio ReactJS Ignite')
+   // Esperando que o desafio não esteja com a classe completed.
+   expect(firstTask.parentElement).not.toHaveClass('completed')
 
-    expect(addedFirstTaskTitle).toBeInTheDocument();
-    expect(addedFirstTaskTitle).toHaveTextContent('Desafio ReactJS Ignite');
-    expect(addedFirstTaskTitle.parentElement).not.toHaveClass('completed')
-
-    expect(addedSecondTaskTitle).toHaveTextContent('Beber água');
-    expect(addedSecondTaskTitle.parentElement).not.toHaveClass('completed')
   })
 
   it('should not be able to add a task with a empty title', () => {
-    render(<TaskList />);
+    // Renderizar o componente
+    render(<TaskList />)
 
-    const addTaskButton = screen.getByTestId('add-task-button');
+    // Pegar o botão de adicionar uma task
+    const addTaskButton = screen.getByTestId('add-task-button')
 
-    fireEvent.click(addTaskButton);
+    // Dar submit no form
+    fireEvent.click(addTaskButton)
 
+    // Esperando que não tenha nenhuma task.
     expect(screen.queryByTestId('task')).not.toBeInTheDocument();
 
-    const taskInput = screen.getByPlaceholderText('Adicionar novo todo');
-
-    fireEvent.change(taskInput, {
-      target: {
-        value: 'Desafio ReactJS Ignite'
-      }
-    });
-    
-    fireEvent.click(addTaskButton);
-
-    const addedFirstTaskTitle = screen.getByText('Desafio ReactJS Ignite');
-
-    expect(addedFirstTaskTitle).toHaveTextContent('Desafio ReactJS Ignite');
   })
 
   it('should be able to remove a task', async () => {
-    render(<TaskList />);
+    // Renderizando o componente na tela
+    render(<TaskList />)
 
-    const taskInput = screen.getByPlaceholderText('Adicionar novo todo');
-    const addTaskButton = screen.getByTestId('add-task-button');
+    // Pegando o input pelo placeholder
+    const inputTask = screen.getByPlaceholderText('Adicionar novo todo')
 
-    fireEvent.change(taskInput, {
+    // Pegando o botão de adicionar uma task
+    const buttonAddTask = screen.getByTestId('add-task-button')
+
+    // mudando o valor do input
+    fireEvent.change(inputTask, {
       target: {
-        value: 'Desafio ReactJS Ignite'
+        value: 'Beber Água'
       }
-    });
-    fireEvent.click(addTaskButton);
+    })
 
-    fireEvent.change(taskInput, {
-      target: {
-        value: 'Beber água'
-      }
-    });
-    fireEvent.click(addTaskButton);
+    // Dando submit no formulário
+    fireEvent.click(buttonAddTask)
 
-    const addedFirstTaskTitle = screen.getByText('Desafio ReactJS Ignite');
-    const addedSecondTaskTitle = screen.getByText('Beber água');
+    // Esperando que a Task Beber Água exista na tela
+    expect(screen.getByText('Beber Água')).toBeInTheDocument()
 
-    expect(addedFirstTaskTitle).toBeInTheDocument()
-    expect(addedSecondTaskTitle).toBeInTheDocument();
+    // Pegando o botão de excluir task
+    const removeTaskButton = screen.getByTestId('remove-task-button')
+    
+    // Removendo a task
+    fireEvent.click(removeTaskButton)
 
-    const [addedFirstTaskRemoveButton] = screen.getAllByTestId('remove-task-button');
-
-    fireEvent.click(addedFirstTaskRemoveButton);
-
-    expect(addedFirstTaskTitle).not.toBeInTheDocument();
-    expect(addedSecondTaskTitle).toBeInTheDocument();
+    // Esperando que a Task Beber Água não exista na tela
+    expect(screen.queryByText('Beber Água')).not.toBeInTheDocument()
   })
 
   it('should be able to check a task', () => {
-    render(<TaskList />);
+    // Renderizando o componente TaskList
+    render(<TaskList />)
 
-    const taskInput = screen.getByPlaceholderText('Adicionar novo todo');
-    const addTaskButton = screen.getByTestId('add-task-button');
+    // Pegar o input com o texto do placeholder
+    const inputTask = screen.getByPlaceholderText('Adicionar novo todo')
 
-    fireEvent.change(taskInput, {
+    // Pegar o botão pelo data-test-id
+    const buttonAddTask = screen.getByTestId('add-task-button')
+
+    // Mudar o valor do input para Beber Água
+    fireEvent.change(inputTask, {
+      target: {
+        value: 'Beber Água'
+      }
+    })
+
+    // Clicando no botão de adicionar uma task
+    fireEvent.click(buttonAddTask)
+
+    fireEvent.change(inputTask, {
       target: {
         value: 'Desafio ReactJS Ignite'
       }
     });
-    fireEvent.click(addTaskButton);
 
-    fireEvent.change(taskInput, {
-      target: {
-        value: 'Beber água'
-      }
-    });
-    fireEvent.click(addTaskButton);
+    // Clicando no botão de adicionar uma task
+    fireEvent.click(buttonAddTask)
 
-    const [addedFirstTask, addedSecondTask] = screen.getAllByTestId('task');
+    const [firstTask, secondTask] = screen.getAllByTestId('task');
 
-    if (addedFirstTask.firstChild) {
-      fireEvent.click(addedFirstTask.firstChild)
+    if (firstTask.firstChild) {
+      fireEvent.click(firstTask.firstChild)
     }
 
-    expect(addedFirstTask).toBeInTheDocument();
-    expect(addedFirstTask).toHaveClass('completed');
+    expect(firstTask).toBeInTheDocument();
+    expect(firstTask).toHaveClass('completed');
 
-    expect(addedSecondTask).toBeInTheDocument();
-    expect(addedSecondTask).not.toHaveClass('completed');
+    expect(secondTask).toBeInTheDocument();
+    expect(secondTask).not.toHaveClass('completed');
+
   })
 })
